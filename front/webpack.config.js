@@ -9,7 +9,7 @@ module.exports = {
 
     entry: './src/index.tsx',
     output: {
-      path: __dirname+ '/dist',
+      path: path.join(__dirname, 'dist'),
       filename: 'bundle.js',
     },
     resolve: {
@@ -27,7 +27,21 @@ module.exports = {
                         loader: "ts-loader"
                     }
                 ]
-            }
+            },
+            {
+                test: /\.css$/,
+                //css-loader 먼저 그 뒤 style-loader처리
+                use: ['style-loader', 'css-loader'],
+                exclude: /(node_modules)|(public)/,
+              },
+              {
+                test: /\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: 'url-loader',
+                options: {
+                  name: 'images/[hash].[ext]',
+                  limit: 10000,
+                },
+              }
         ]
     },
     devServer: {
